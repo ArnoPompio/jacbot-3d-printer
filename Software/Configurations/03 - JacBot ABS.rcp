@@ -1,0 +1,166 @@
+[print]
+name = 03 - JacBot ABS
+defaultQuality = Uh6SR2EQUtw2GNnyc6PiqX1DpNsdEBoW
+travelSpeedMin = 150
+travelSpeedMax = 150
+firstLayerSpeedMin = 20
+firstLayerSpeedMax = 30
+infillSpeedMin = 30
+infillSpeedMax = 120
+skinSpeedMin = 30
+skinSpeedMax = 60
+infillType = 0
+innerPerimeterMin = 40
+innerPerimeterMax = 80
+outerPerimeterMin = 30
+outerPerimeterMax = 60
+printSpeedMin = 15
+printSpeedMax = 90
+nozzleDiameter = 0
+gcodeFlavour = 0
+retractionCombing = True
+combing = 1
+multiVolumeOverlap = 0
+cutOffObjectBottom = 0
+shellThickness = 0.8
+infillTopBottomThickness = 0.6
+infillDensityPercent = 20
+supportType = 1
+platformAdhesion = 0
+dualExtrusion = 0
+wipeAndPrimeTower = True
+oozeShield = False
+enableRetraction = True
+retractionSpeed = 40
+retractionDistance = 4
+multiExtruderSwitchAmount = 16
+startGCode = """
+; Works follow by simecolon are comments
+; Initial setting
+G21 ;metric values
+G90 ;absolute positioning
+M82 ;set extruder to absolute mode
+M107 ;turn the fan off
+M104 S0 ; kill extruder temperature
+M140 S0 ; kill bed temperature
+
+; Check  the clearance of the Nuzzle 
+G91 ; Relative Positioning
+G1 Z5 F600; Move down the bed by 5 mm 
+G90 ;absolute positioning
+G28
+G1 Z15
+G1 X150 Y200 F4000 ; fast move Extruder at middle in front
+
+; Heating the heat bed 
+M140 S110 ;Set Bed Temp 110 C
+
+; Preheating the hot end
+M109 S180 B260 F1;activate auto temp min 180 max 260 scaling factor 1 (for ABS)
+
+; Auto bed leveling
+M117 Z Probe...
+G28; Home Axis
+G29; Z-Probe the bed (4 points probe)  VERY IMPORTANT !!!
+
+G1 Z15
+G1 X150 Y200 F4000 ; fast move Extruder at middle in front
+
+
+; Heating the hot end to reach target temperature
+M117 Extruder Heat Again...
+M109 S240 ; heat nozzle to 240 C and wait until reached
+
+G1 Z0
+G1 F12000 E5 ; fast extruding 5mm long of filament
+G92 E0 ; reset extruder
+
+; VERY IMPORTANT !!!
+; Adjust the distance between the nuzzle and the bed.
+; Reduce distance by adding positive number, exp. 0.1, 0.2, 0.4...
+; Increase distance by adding negative number, exp. -0.1, -0.2...
+;*************************************************
+G92 z0.1 ;  Now the distance is reduced by 0.1 mm 
+;*************************************************
+
+M117 Printing...;Put the ‘printing...’ message on LCD screen
+"""
+endGCode = """
+G91                           ; relative position 
+G1      E-0.5              ; retract filament by 0.5 mm
+G1      Z0.2 E-5        ; move down the bed by 0.2 mm and retract filament by 5 mm
+G90                           ; absolute position
+G1       Z205 X0 Y0 F800  ; Move bed to bottom, move Extruder to home
+M107                               ;turn the fan off
+M104  S0                        ;extruder heater off
+M140  S0                        ;heated bed heater off 
+M84                                 ;steppers off
+"""
+preSwitchExtruderCode = 
+postSwitchExtruderCode = 
+wipeAndPrimeTowerVolume = 15
+retractionMinimumTravel = 1.5
+minimumExtrusionBeforeRetract = 0.02
+zhop = 0
+skirtLineCount = 3
+skirtDistance = 2
+skirtMinimumLength = 150
+solidInfillTop = True
+solidInfillBottom = True
+infillOverlapPercent = 15
+supportStructureType = 0
+supportOverhang = 60
+supportFillPercent = 15
+supportDistanceXY = 0.7
+supportDistanceZ = 0.15
+supportExtruder = -1
+spiralizeOuterContour = False
+brimWidth = 4
+raftExtraMargin = 5
+raftLineSpacing = 1
+raftBaseThickness = 0.3
+raftBaseWidth = 0.7
+raftInterfaceThickness = 0.2
+raftInterfaceLineWidth = 0.2
+raftAirGap = 0
+raftAirGapLayer0 = 0
+raftSurfaceLayer = 1
+fixCombineEverythingA = True
+fixCombineEverythingB = False
+fixKeepOpenFaces = False
+fixExtensiveStitching = False
+fanFullAtHeight = 0.5
+perimeterBeforeInfill = True
+minimumSpeed = 10
+coolHeadLift = False
+numQuality = 5
+[quality_0]
+name = 0.2 mm
+signature = Uh6SR2EQUtw2GNnyc6PiqX1DpNsdEBoW
+layerHeight = 0.2
+layer0widthPercent = 100
+firstLayerHeight = 0.4
+[quality_1]
+name = 0.3
+signature = lCZXmni3diTBW8UF3fszNIGez6Pi1FXG
+layerHeight = 0.3
+layer0widthPercent = 100
+firstLayerHeight = 0.4
+[quality_2]
+name = 0.4
+signature = TQFHIJQIPzp91GMobvSzMRccmXeMKcwt
+layerHeight = 0.4
+layer0widthPercent = 100
+firstLayerHeight = 0.4
+[quality_3]
+name = 0.1
+signature = HXTLaTXHIKXIcRqv0Q5jbHuc5RZ7sV52
+layerHeight = 0.1
+layer0widthPercent = 100
+firstLayerHeight = 0.2
+[quality_4]
+name = 0.05
+signature = LsIz1xuycKluEo6wnWVWim9aWyabHVGC
+layerHeight = 0.05
+layer0widthPercent = 100
+firstLayerHeight = 0.2
